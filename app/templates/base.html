@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<!-- This html file is a template for the general page structure -->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    {% if title %}
+    <title>{{ title }} - Microblog</title>
+    {% else %}
+    <title>Welcome to Microblog</title>
+    {% endif %}
+  </head>
+  <body>
+    <div>Microblog: <a href="/index">Home</a></div>
+    <hr>
+    <!--The dynamic content between pages is shown here, in the block content -->
+    {% block content %}{% endblock %}
+  </body>
+</html>
