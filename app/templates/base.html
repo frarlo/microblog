@@ -15,6 +15,15 @@
       <a href="/login">Login</a>
     </div>
     <hr>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul>
+      {% for message in messages %}
+      <li>{{ message }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
     <!--The dynamic content between pages is shown here, in the block content -->
     {% block content %}{% endblock %}
   </body>
