@@ -1,12 +1,13 @@
 from datetime import datetime, timezone
 from werkzeug.security import generate_password_hash, check_password_hash
 from typing import Optional
+from flask_login import UserMixin
 import sqlalchemy as sa
 import sqlalchemy.orm as so
-from app import db
+from app import db, login
 
 # Class to define a User in our DB:
-class User(db.Model):
+class User(UserMixin, db.Model):
     # Defining the User's ID as the PK:
     id: so.Mapped[int] = so.mapped_column(primary_key=True)
     # The rest of the fields:
@@ -26,6 +27,10 @@ class User(db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+@login.user_loader
+def load_user(user_id):
+    return db.session.get(User, int(user_id))
 
 # Class to define a Post made by a User:
 class Post(db.Model):
