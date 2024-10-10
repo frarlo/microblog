@@ -4,3 +4,7 @@
 
 # Database
 app.db
+
+# Logs:
+logs/
+microblog.log*
