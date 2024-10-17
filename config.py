@@ -16,4 +16,4 @@ class Config:
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     ADMINS = ['your-email@example.com']
     # Posts per page:
-    POSTS_PER_PAGE = 20
+    POSTS_PER_PAGE = 3
