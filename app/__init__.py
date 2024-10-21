@@ -11,9 +11,7 @@ from logging.handlers import SMTPHandler, RotatingFileHandler
 import os
 
 def get_locale():
-    # return request.accept_languages.best_match(app.config['LANGUAGES'])
-    # TEST "ES" LOCALE:
-    return 'es'
+    return request.accept_languages.best_match(app.config['LANGUAGES'])
 
 app = Flask(__name__)
 app.config.from_object(Config)
