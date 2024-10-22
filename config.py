@@ -19,3 +19,5 @@ class Config:
     POSTS_PER_PAGE = 20
     # Website available languages:
     LANGUAGES = ['en', 'es']
+    # API key for MS Translator:
+    MS_TRANSLATOR_KEY = os.environ.get('MS_TRANSLATOR_KEY')
