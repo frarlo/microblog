@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-10-19 09:05+0200\n"
+"POT-Creation-Date: 2024-10-23 09:33+0200\n"
 "PO-Revision-Date: 2024-10-19 08:36+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: es\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.16.0\n"
 
-#: app/__init__.py:23
+#: app/__init__.py:22
 msgid "Please log in to access this page."
 msgstr "Por favor, ingrese para acceder a esta página"
 
@@ -38,7 +38,7 @@ msgstr "Contraseña"
 msgid "Remember me"
 msgstr "Recordarme"
 
-#: app/forms.py:13 app/routes.py:77 app/templates/login.html:5
+#: app/forms.py:13 app/routes.py:83 app/templates/login.html:5
 msgid "Sign In"
 msgstr "Entrar"
 
@@ -50,7 +50,7 @@ msgstr "Email"
 msgid "Repeat Password"
 msgstr "Repetir Contraseña"
 
-#: app/forms.py:21 app/routes.py:100 app/templates/register.html:5
+#: app/forms.py:21 app/routes.py:106 app/templates/register.html:5
 msgid "Register"
 msgstr "Registro"
 
@@ -82,70 +82,78 @@ msgstr "Pedir nueva contraseña"
 msgid "Repeat the Password"
 msgstr "Repite la contraseña"
 
-#: app/routes.py:31
+#: app/routes.py:37
 msgid "Your post is now live!"
 msgstr "¡Tu artículo se ha publicado!"
 
-#: app/routes.py:40 app/templates/base.html:27
+#: app/routes.py:46 app/templates/base.html:27
 msgid "Home"
 msgstr "Inicio"
 
-#: app/routes.py:54 app/templates/base.html:30
+#: app/routes.py:60 app/templates/base.html:30
 msgid "Explore"
 msgstr "Explorar"
 
-#: app/routes.py:69
+#: app/routes.py:75
 msgid "Invalid username or password"
 msgstr "Usuario o contraseña incorrectos"
 
-#: app/routes.py:97
+#: app/routes.py:103
 msgid "Congratulations, you are now a registered user!"
 msgstr "¡Enhorabuena, ya estás registrado como usuario!"
 
-#: app/routes.py:129
+#: app/routes.py:135
 msgid "Your changes have been saved."
 msgstr "Tus cambios se han guardado"
 
-#: app/routes.py:136 app/templates/edit_profile.html:5
+#: app/routes.py:142 app/templates/edit_profile.html:5
 msgid "Edit Profile"
 msgstr "Editar Perfil"
 
-#: app/routes.py:146 app/routes.py:167
+#: app/routes.py:152 app/routes.py:173
 #, python-format
 msgid "User %(username)s not found."
 msgstr "Usuario %(username)s no encontrado."
 
-#: app/routes.py:149
+#: app/routes.py:155
 msgid "You cannot follow yourself!"
 msgstr "¡No puedes seguirte a ti mismo!"
 
-#: app/routes.py:154
+#: app/routes.py:160
 #, python-format
 msgid "You are now following %(username)s!"
 msgstr "¡Ahora estás siguiendo a %(username)s!"
 
-#: app/routes.py:170
+#: app/routes.py:176
 msgid "You cannot unfollow yourself!"
 msgstr "¡No puedes seguirte a ti mismo!"
 
-#: app/routes.py:175
+#: app/routes.py:181
 #, python-format
 msgid "You stopped following %(username)s."
 msgstr "Has dejado de seguir a %(username)s."
 
-#: app/routes.py:192
+#: app/routes.py:198
 msgid "Check your email for the instructions to reset your password."
 msgstr ""
 "Comprueba tu email y sigue las instrucciones para reestablecer tu "
 "contraseña."
 
-#: app/routes.py:195 app/templates/reset_password_request.html:5
+#: app/routes.py:201 app/templates/reset_password_request.html:5
 msgid "Reset Password"
 msgstr "Nueva Contraseña"
 
-#: app/routes.py:208
+#: app/routes.py:214
 msgid "Your password has been reset."
 msgstr "Tu contraseña se ha reestablecido"
+
+#: app/translate.py:7
+msgid "Error: the translation service is not configured."
+msgstr "Error: el servicio de traducción no está configurado."
+
+#: app/translate.py:20
+msgid "Error: translation service failed."
+msgstr "Error: el servicio de traducción ha fallado."
 
 #: app/templates/404.html:5
 msgid "Back"
@@ -155,6 +163,10 @@ msgstr "Atrás"
 #, python-format
 msgid "%(username)s said %(when)s"
 msgstr "%(username)s dijo %(when)s"
+
+#: app/templates/_post.html:22
+msgid "Translate"
+msgstr "Traducir"
 
 #: app/templates/base.html:10
 msgid "Welcome to Microblog"
