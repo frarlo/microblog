@@ -1,11 +1,16 @@
 import os
+from flask import Blueprint
 import click
-from app import app
 
-@app.cli.group()
+
+bp = Blueprint('cli', __name__, cli_group=None)
+
+
+@bp.cli.group()
 def translate():
     """ Translation and localization commands """
     pass
+
 
 @translate.command()
 def update():
@@ -16,11 +21,13 @@ def update():
         raise RuntimeError('update command failed')
     os.remove('messages.pot')
 
+
 @translate.command()
 def compile():
     """ Compile all languages """
     if os.system('pybabel compile -d app/translations'):
         raise RuntimeError('compile command failed')
+
 
 @translate.command()
 @click.argument('lang')

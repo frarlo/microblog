@@ -1,24 +1,31 @@
-import os
-# NOT USING 'PRODUCTION' DB:
-os.environ['DATABASE_URL'] = 'sqlite://'
-
+#!/usr/bin/env python
 from datetime import datetime, timezone, timedelta
 import unittest
-from app import app, db
+from app import create_app, db
 from app.models import User, Post
+from config import Config
+
+
+class TestConfig(Config):
+    TESTING = True
+    SQLALCHEMY_DATABASE_URI = 'sqlite://'
+
 
 class UserModelCase(unittest.TestCase):
     # Orchestration of the test:
     def setUp(self):
-        self.app_context = app.app_context()
+        self.app = create_app(TestConfig)
+        self.app_context = self.app.app_context()
         self.app_context.push()
         db.create_all()
+
 
     # Dismantling the test:
     def tearDown(self):
         db.session.remove()
         db.drop_all()
         self.app_context.pop()
+
 
     # Tests the password hashing:
     def test_password_hashing(self):
@@ -27,12 +34,14 @@ class UserModelCase(unittest.TestCase):
         self.assertFalse(u.check_password('dog'))
         self.assertTrue(u.check_password('cat'))
 
+
     # Tests the avatar function:
     def test_avatar(self):
         u = User(username = 'john', email = 'john@example.com')
         self.assertEqual(u.avatar(128), ('https://www.gravatar.com/avatar/'
                                          'd4c74594d841139328695756648b6bd6'
                                          '?d=identicon&s=128'))
+
 
     # Test the follow function and the following/followers count:
     def test_follow(self):
@@ -66,6 +75,7 @@ class UserModelCase(unittest.TestCase):
         self.assertFalse(u1.is_following(u2))
         self.assertEqual(u1.following_count(), 0)
         self.assertEqual(u2.followers_count(), 0)
+
 
     # Test to assert the posts of each user:
     def test_follow_posts(self):
@@ -105,6 +115,7 @@ class UserModelCase(unittest.TestCase):
         self.assertEqual(f2, [p2, p3])
         self.assertEqual(f3, [p3, p4])
         self.assertEqual(f4, [p4])
+
 
 if __name__ == '__main__':
     unittest.main(verbosity = 2)

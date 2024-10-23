@@ -1,7 +1,11 @@
 import sqlalchemy as sa
 import sqlalchemy.orm as so
-from app import app, db, cli
+from app import create_app, db
 from app.models import User, Post
+
+
+app = create_app()
+
 
 # Context function to return the objects we need when using the Flask shell:
 @app.shell_context_processor
