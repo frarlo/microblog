@@ -20,8 +20,10 @@ class Config:
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     ADMINS = ['your-email@example.com']
     # Posts per page:
-    POSTS_PER_PAGE = 20
+    POSTS_PER_PAGE = 10
     # Website available languages:
     LANGUAGES = ['en', 'es']
     # API key for MS Translator:
     MS_TRANSLATOR_KEY = os.environ.get('MS_TRANSLATOR_KEY')
+    # Elastic search location:
+    ELASTICSEARCH_URL = os.environ.get('ELASTICSEARCH_URL')
