@@ -98,6 +98,13 @@ class User(UserMixin, db.Model):
         back_populates = 'following'
     )
 
+    # Private messages:
+    last_message_read_time: so.Mapped[Optional[datetime]]
+    messages_sent: so.WriteOnlyMapped['Message'] = so.relationship(
+        foreign_keys='Message.sender_id', back_populates='author')
+    messages_received: so.WriteOnlyMapped['Message'] = so.relationship(
+        foreign_keys='Message.recipient_id', back_populates='recipient')
+
     # Prints the object of this class:
     def __repr__(self):
         return '<User {}>'.format(self.username)
@@ -158,6 +165,12 @@ class User(UserMixin, db.Model):
             current_app.config['SECRET_KEY'], algorithm = 'HS256'
         )
 
+    def unread_message_count(self):
+        last_read_time = self.last_message_read_time or datetime(1900, 1, 1)
+        query = sa.select(Message).where(Message.recipient == self,
+                                         Message.timestamp > last_read_time)
+        return db.session.scalar(sa.select(sa.func.count()).select_from(query.subquery()))
+
     @staticmethod
     def verify_reset_password_token(token):
         try:
@@ -190,3 +203,25 @@ class Post(SearchableMixin, db.Model):
 
     def __repr__(self):
         return '<Post {}>'.format(self.body)
+
+# Class to define a private Message between users:
+class Message(db.Model):
+    id: so.Mapped[int] = so.mapped_column(primary_key=True)
+    sender_id: so.Mapped[int] = so.mapped_column(
+        sa.ForeignKey(User.id), index=True)
+    recipient_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey(
+        User.id), index=True)
+    body: so.Mapped[str] = so.mapped_column(sa.String(140))
+    timestamp: so.Mapped[datetime] = so.mapped_column(
+        index=True, default=lambda: datetime.now(timezone.utc))
+
+    author: so.Mapped[User] = so.relationship(
+        foreign_keys='Message.sender_id',
+        back_populates='messages_sent')
+    recipient: so.Mapped[User] = so.relationship(
+        foreign_keys='Message.recipient_id',
+        back_populates='messages_received'
+    )
+
+    def __repr__(self):
+        return '<Message {}>'.format(self.body)
