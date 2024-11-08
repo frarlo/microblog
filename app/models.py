@@ -8,6 +8,7 @@ from flask import current_app
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
+import json
 from app import db, login
 from app.search import add_to_index, remove_from_index, query_index
 
@@ -105,6 +106,9 @@ class User(UserMixin, db.Model):
     messages_received: so.WriteOnlyMapped['Message'] = so.relationship(
         foreign_keys='Message.recipient_id', back_populates='recipient')
 
+    # Notifications:
+    notifications: so.WriteOnlyMapped['Notification'] = so.relationship(back_populates='user')
+
     # Prints the object of this class:
     def __repr__(self):
         return '<User {}>'.format(self.username)
@@ -171,6 +175,12 @@ class User(UserMixin, db.Model):
                                          Message.timestamp > last_read_time)
         return db.session.scalar(sa.select(sa.func.count()).select_from(query.subquery()))
 
+    def add_notification(self, name, data):
+        db.session.execute(self.notifications.delete().where(Notification.name == name))
+        notification = Notification(name=name, payload_json=json.dumps(data), user=self)
+        db.session.add(notification)
+        return notification
+
     @staticmethod
     def verify_reset_password_token(token):
         try:
@@ -225,3 +235,16 @@ class Message(db.Model):
 
     def __repr__(self):
         return '<Message {}>'.format(self.body)
+
+# Class to define our App notifications:
+class Notification(db.Model):
+    id: so.Mapped[int] = so.mapped_column(primary_key=True)
+    name: so.Mapped[str] = so.mapped_column(sa.String(128), index=True)
+    user_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey(User.id), index=True)
+    timestamp: so.Mapped[float] = so.mapped_column(index=True, default=time)
+    payload_json: so.Mapped[str] = so.mapped_column(sa.Text)
+
+    user: so.Mapped[User] = so.relationship(back_populates='notifications')
+
+    def get_data(self):
+        return json.loads(str(self.payload_json))
