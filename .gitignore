@@ -11,3 +11,6 @@ microblog.log*
 
 # Vagrant files:
 .vagrant/
+
+# WSL Virtual Environment:
+/.venv_wsl/
