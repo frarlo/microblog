@@ -4,6 +4,7 @@ from flask import render_template, flash, redirect, url_for, request, g, \
 from flask_login import current_user, login_required
 from flask_babel import _, get_locale
 import sqlalchemy as sa
+from flask_migrate import current
 from langdetect import detect, LangDetectException
 from app import db
 from app.main.forms import EditProfileForm, EmptyForm, PostForm, SearchForm, MessageForm
@@ -146,6 +147,7 @@ def translate_text():
     data = request.get_json()
     return {'text': translate(data['text'], data['source_language'], data['target_language'])}
 
+
 @bp.route('/search')
 @login_required
 def search():
@@ -160,12 +162,14 @@ def search():
     return render_template('search.html', title=_('Search'), posts=posts,
                            next_url=next_url, prev_url=prev_url)
 
+
 @bp.route('/user/<username>/popup')
 @login_required
 def user_popup(username):
     user = db.first_or_404(sa.select(User).where(User.username == username))
     form = EmptyForm()
     return render_template('user_popup.html', user=user, form=form)
+
 
 @bp.route('/send_message/<recipient>', methods=['GET', 'POST'])
 @login_required
@@ -181,6 +185,7 @@ def send_message(recipient):
         return redirect(url_for('main.user', username=recipient))
     return render_template('send_message.html', title=_('Send Message'),
                            form=form, recipient=recipient)
+
 
 @bp.route('/messages')
 @login_required
@@ -199,6 +204,7 @@ def messages():
     return render_template('messages.html', messages=messages.items,
                            next_url=next_url, prev_url=prev_url)
 
+
 @bp.route('/notifications')
 @login_required
 def notifications():
@@ -211,3 +217,14 @@ def notifications():
         'data': n.get_data(),
         'timestamp': n.timestamp
     }for n in notifications]
+
+
+@bp.route('/export_posts')
+@login_required
+def export_posts():
+    if current_user.get_task_in_progress('export_posts'):
+        flash(_('An export task is currently in progress'))
+    else:
+        current_user.launch_task('export_posts', _('Exporting posts...'))
+        db.session.commit()
+    return redirect(url_for('main.user', username=current_user.username))

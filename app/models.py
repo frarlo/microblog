@@ -168,7 +168,7 @@ class User(UserMixin, db.Model):
             .order_by(Post.timestamp.desc())
         )
 
-    def get_reset_password(self, expires_in=600):
+    def get_reset_password_token(self, expires_in=600):
         return jwt.encode(
             {'reset_password': self.id, 'exp': time() + expires_in},
             current_app.config['SECRET_KEY'], algorithm = 'HS256'
@@ -185,6 +185,20 @@ class User(UserMixin, db.Model):
         notification = Notification(name=name, payload_json=json.dumps(data), user=self)
         db.session.add(notification)
         return notification
+
+    def launch_task(self, name, description, *args, **kwargs):
+        rq_job = current_app.task_queue.enqueue(f'app.tasks.{name}', self.id, *args, **kwargs)
+        task = Task(id=rq_job.get_id(), name=name, description=description, user=self)
+        db.session.add(task)
+        return task
+
+    def get_tasks_in_progress(self):
+        query = self.tasks.select().where(Task.complete == False)
+        return db.session.scalars(query)
+
+    def get_task_in_progress(self, name):
+        query = self.tasks.select().where(Task.name == name, Task.complete == False)
+        return db.session.scalar(query)
 
     @staticmethod
     def verify_reset_password_token(token):
