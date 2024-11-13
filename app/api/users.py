@@ -1,3 +1,5 @@
+import sqlalchemy as sa
+from flask import request
 from app import db
 from app.api import bp
 from app.models import User
@@ -10,7 +12,9 @@ def get_user(id):
 
 @bp.route('/users', methods=['GET'])
 def get_users():
-    pass
+    page = request.args.get('page', 1, type=int)
+    per_page = min(request.args.get('per_page', 10, type=int), 100)
+    return User.to_collection_dict(sa.select(User), page, per_page, 'api.get_users')
 
 
 @bp.route('/users/<int:id>/followers', methods=['GET'])
