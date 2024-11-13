@@ -1,9 +1,11 @@
+from app import db
 from app.api import bp
+from app.models import User
 
 
 @bp.route('/users/<int:id>', methods=['GET'])
 def get_user(id):
-    pass
+    return db.get_or_404(User, id).to_dict()
 
 
 @bp.route('/users', methods=['GET'])
