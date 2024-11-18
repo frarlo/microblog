@@ -1,6 +1,6 @@
 import logging
-from logging.handlers import SMTPHandler, RotatingFileHandler
 import os
+import rq
 from flask import Flask, request, current_app
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -11,10 +11,12 @@ from flask_babel import Babel, lazy_gettext as _l
 from config import Config
 from elasticsearch import Elasticsearch
 from redis import Redis
-import rq
+from logging.handlers import SMTPHandler, RotatingFileHandler
+
 
 def get_locale():
     return request.accept_languages.best_match(current_app.config['LANGUAGES'])
+
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -24,6 +26,7 @@ login.login_message = _l('Please log in to access this page.')
 mail = Mail()
 moment = Moment()
 babel = Babel()
+
 
 def create_app(config_class = Config):
     app = Flask(__name__)

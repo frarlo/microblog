@@ -1,5 +1,4 @@
 from http.client import HTTPException
-
 from werkzeug.http import HTTP_STATUS_CODES
 from app.api import bp
 
