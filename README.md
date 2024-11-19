@@ -18,7 +18,7 @@ This repository contains a functional microblog Flask app. It is the result of c
 - **Backend:** Flask, SQLAlchemy.
 - **Frontend:** Flask-WTF, Bootstrap.
 - **Database:** SQLite (dev) & PostgreSQL (prod).
-- **Deployment:** Docker.
+- **Deployment:** Vagrant, Docker and Render.
 
 
 ## How to run this project locally 🔧
