@@ -2,8 +2,6 @@
 
 This repository contains a functional microblog Flask app. It is the result of completing Miguel Grinberg's [Flask Mega-Tutorial](https://blog.miguelgrinberg.com/). Thanks to him for bringing such a rich tutorial for all kinds of expertise.
 
----
-
 ## Key Features ✨
 
 - **User Authentication:** Users can register, login and their passwords are securely handled.
@@ -15,8 +13,6 @@ This repository contains a functional microblog Flask app. It is the result of c
 - **Bing Translations:** Translate posts by using Azure's translation API in real time.
 - **REST API:** Secured JSON-based endpoints ready to be implemented with external services.
 
----
-
 ## Tech Stack 🛠️
 
 - **Backend:** Flask, SQLAlchemy.
@@ -24,7 +20,6 @@ This repository contains a functional microblog Flask app. It is the result of c
 - **Database:** SQLite (dev) & PostgreSQL (prod).
 - **Deployment:** Docker.
 
----
 
 ## How to run this project locally 🔧
 
@@ -72,8 +67,6 @@ This repository contains a functional microblog Flask app. It is the result of c
    
 Note: Some app features (emails, translations, elasticsearch) will not work if the system variables are not defined beforehand.
 
----
-
 # Why This Project 🤔
 
 This project allowed me to dive into Flask, a framework that was completely new to me. This project gave me the opportunity to showcase and practice my skills in:
@@ -82,8 +75,6 @@ This project allowed me to dive into Flask, a framework that was completely new 
 - Backend architecture.
 - API integration.
 - Responsive design and deployment practices.
-
----
 
 # License 📄
 
